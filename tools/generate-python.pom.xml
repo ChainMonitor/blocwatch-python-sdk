@@ -54,6 +54,7 @@
               <language>python</language>
               <configOptions>
                 <packageName>blocwatch_v1</packageName>
+                <excludeTests>true</excludeTests>
                 <packageVersion>0.5.0</packageVersion>
               </configOptions>
             </configuration>
