@@ -673,7 +673,7 @@
         "contact": {
             "email": "support@blocwatch.com",
             "name": "Support",
-            "url": "https://www.blocwatch.com/support"
+            "url": "https://www.blocwatch.com/"
         },
         "description": "The premier crypto API for blockchain analysis",
         "license": {
