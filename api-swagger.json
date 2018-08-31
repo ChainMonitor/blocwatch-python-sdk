@@ -1,0 +1,1936 @@
+{
+    "basePath": "/",
+    "definitions": {
+        "BitcoinAddress": {
+            "description": "Information about a single Bitcoin address.",
+            "properties": {
+                "address": {
+                    "description": "Bitcoin Base58-Check or bech32 encoded address.",
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "summary": {
+                    "$ref": "#/definitions/Summary",
+                    "description": "Summary information about this Bitcoin address."
+                }
+            },
+            "title": "BitcoinAddress",
+            "type": "object"
+        },
+        "BitcoinBlock": {
+            "description": "A single block in the bitcoin blockchain",
+            "properties": {
+                "details": {
+                    "$ref": "#/definitions/Details",
+                    "description": "Detailed information from this block."
+                },
+                "hash": {
+                    "description": "The unique hash that identifies this block.",
+                    "type": "string"
+                },
+                "height": {
+                    "description": "The height (distance) of this block from the genesis block (block 0).",
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "medianTime": {
+                    "description": "The median time of this block.\n\n <p>The median time is defined as the median of the time of the previous 11 mined blocks.",
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "minerTime": {
+                    "description": "The time that the miner that mined this block attached to this block.",
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "summary": {
+                    "$ref": "#/definitions/Summary",
+                    "description": "Summary information for this block."
+                }
+            },
+            "title": "BitcoinBlock",
+            "type": "object"
+        },
+        "BitcoinCompareQuery": {
+            "properties": {
+                "field": {
+                    "enum": [
+                        "id",
+                        "payer",
+                        "payee",
+                        "height",
+                        "confirmations",
+                        "inputs",
+                        "outputs",
+                        "value"
+                    ],
+                    "type": "string"
+                },
+                "op": {
+                    "enum": [
+                        "equals",
+                        "not_equals",
+                        "less_than",
+                        "less_than_equals",
+                        "greater_than",
+                        "greater_than_equals"
+                    ],
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                }
+            },
+            "title": "BitcoinCompareQuery",
+            "type": "object"
+        },
+        "BitcoinInput": {
+            "description": "A single input to a Bitcoin Transaction.",
+            "properties": {
+                "addressNames": {
+                    "description": "Bitcoin Addresses that are known to be sources for this transaction input.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "bitcoinValue": {
+                    "description": "The value of this input in BTC.",
+                    "format": "double",
+                    "type": "number"
+                },
+                "coinbaseInput": {
+                    "type": "boolean"
+                },
+                "details": {
+                    "$ref": "#/definitions/InputDetails",
+                    "description": "Details of this transaction input, if requested."
+                },
+                "inputIndex": {
+                    "description": "The position of this input within the transaction (e.g., ordinal in vin).",
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "medianTime": {
+                    "description": "The medianTime of the block that included the transaction output that this input spends.",
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "minerTime": {
+                    "description": "The minerTime of the block that included the transaction output that this input spends.",
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "signatures": {
+                    "description": "Number of signatures provided for this input.",
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "transactionName": {
+                    "description": "The name of the transaction that supplied this input value.",
+                    "type": "string"
+                }
+            },
+            "title": "BitcoinInput",
+            "type": "object"
+        },
+        "BitcoinOutput": {
+            "description": "A single Bitcoin Transaction output.",
+            "properties": {
+                "addressNames": {
+                    "description": "For standard transactions, the addresses that can unlock this output.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                },
+                "bitcoinValue": {
+                    "description": "This value of this output, in BTC.",
+                    "format": "double",
+                    "type": "number"
+                },
+                "details": {
+                    "$ref": "#/definitions/OutputDetails"
+                },
+                "medianTime": {
+                    "description": "The time from the transaction that consumed this output",
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "minerTime": {
+                    "description": "The mining time from the containing block of the transaction that consumed this output",
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "name": {
+                    "description": "The addressable name of this output.",
+                    "type": "string"
+                },
+                "outputIndex": {
+                    "description": "The index of this output within the transaction.",
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "transactionName": {
+                    "description": "@return the name of the transaction that consumed this output value",
+                    "type": "string"
+                }
+            },
+            "title": "BitcoinOutput",
+            "type": "object"
+        },
+        "BitcoinQuery": {
+            "description": "A search expression over Bitcoin blocks.\n\n <p>A BitcoinQueryExpression can contain either a comparison or grouping query. Comparison queries\n are standard equality-type comparisons on defined fields of the BlocWatch model. Group queries\n can be used to create conjunctive or disjunctive sets of comparison queries.\n\n <p>One of group_query or compare_query should be specified, but not both.",
+            "properties": {
+                "compareQuery": {
+                    "$ref": "#/definitions/BitcoinCompareQuery",
+                    "description": "A comparison-based query on Bitcoin fields.\n\n <p>The group query and the compare query are exclusive options, only one may set."
+                },
+                "groupQuery": {
+                    "$ref": "#/definitions/GroupQuery",
+                    "description": "A conjunctive (and) or disjunctive (or) query.\n\n <p>The group query and the compare query are exclusive options, only one may set."
+                }
+            },
+            "title": "BitcoinQuery",
+            "type": "object"
+        },
+        "BitcoinSearchRequest": {
+            "properties": {
+                "query": {
+                    "$ref": "#/definitions/BitcoinQuery",
+                    "description": "The query object"
+                },
+                "timeWindow": {
+                    "$ref": "#/definitions/TimeWindow"
+                }
+            },
+            "title": "BitcoinSearchRequest",
+            "type": "object"
+        },
+        "BitcoinTransaction": {
+            "description": "Represents and individual bitcoin transaction",
+            "properties": {
+                "blockHash": {
+                    "type": "string"
+                },
+                "blockName": {
+                    "type": "string"
+                },
+                "details": {
+                    "$ref": "#/definitions/Details"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "lockHeight": {
+                    "format": "int64",
+                    "type": "integer"
+                },
+                "lockTime": {
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "summary": {
+                    "$ref": "#/definitions/Summary"
+                }
+            },
+            "title": "BitcoinTransaction",
+            "type": "object"
+        },
+        "CreateIteratorRequest": {
+            "description": "A request to create an iterator. Iterators have multiple types.\n\n <p>FROM_BLOCK_HEIGHT must have fromBlockHeight set FROM_TIMESTAMP must have fromTimestamp set\n\n <p>For FROM_BEGINNING and FROM_CHAIN_TIP no other arguments are necessary.\n\n <p>Optional query can be provided, and will act as a filter on any records that are returned",
+            "properties": {
+                "bitcoinTimeType": {
+                    "enum": [
+                        "MINER",
+                        "MEDIAN"
+                    ],
+                    "type": "string"
+                },
+                "fromBlockHeight": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "fromTimestamp": {
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "iteratorType": {
+                    "enum": [
+                        "FROM_TIMESTAMP",
+                        "FROM_BLOCK_HEIGHT",
+                        "FROM_BEGINNING",
+                        "FROM_CHAIN_TIP"
+                    ],
+                    "type": "string"
+                },
+                "query": {
+                    "$ref": "#/definitions/BitcoinQuery"
+                }
+            },
+            "title": "CreateIteratorRequest",
+            "type": "object"
+        },
+        "CreateIteratorResponse": {
+            "properties": {
+                "iteratorToken": {
+                    "type": "string"
+                }
+            },
+            "title": "CreateIteratorResponse",
+            "type": "object"
+        },
+        "Details": {
+            "description": "Low-level transaction details",
+            "properties": {
+                "hash": {
+                    "type": "string"
+                },
+                "hex": {
+                    "type": "string"
+                },
+                "size": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "version": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "vsize": {
+                    "format": "int32",
+                    "type": "integer"
+                }
+            },
+            "title": "Details",
+            "type": "object"
+        },
+        "GetAddressResponse": {
+            "properties": {
+                "address": {
+                    "$ref": "#/definitions/BitcoinAddress"
+                }
+            },
+            "title": "GetAddressResponse",
+            "type": "object"
+        },
+        "GetBlockResponse": {
+            "description": "Response to a request to get a single Bitcoin block.",
+            "properties": {
+                "block": {
+                    "$ref": "#/definitions/BitcoinBlock",
+                    "description": "The requested Bitcoin block."
+                }
+            },
+            "title": "GetBlockResponse",
+            "type": "object"
+        },
+        "GetTransactionInputResponse": {
+            "description": "Response for retrieving a single transaction input",
+            "properties": {
+                "input": {
+                    "$ref": "#/definitions/BitcoinInput",
+                    "description": "The requested transaction input."
+                },
+                "transaction": {
+                    "$ref": "#/definitions/BitcoinTransaction",
+                    "description": "The transaction containing this transaction input."
+                }
+            },
+            "title": "GetTransactionInputResponse",
+            "type": "object"
+        },
+        "GetTransactionOutputResponse": {
+            "description": "Response for retrieving a single transaction output",
+            "properties": {
+                "output": {
+                    "$ref": "#/definitions/BitcoinOutput",
+                    "description": "The requested transaction output."
+                },
+                "transaction": {
+                    "$ref": "#/definitions/BitcoinTransaction",
+                    "description": "The transaction containing this output."
+                }
+            },
+            "title": "GetTransactionOutputResponse",
+            "type": "object"
+        },
+        "GetTransactionResponse": {
+            "description": "Response to a getTransaction request.",
+            "properties": {
+                "transaction": {
+                    "$ref": "#/definitions/BitcoinTransaction",
+                    "description": "The requested transaction."
+                }
+            },
+            "title": "GetTransactionResponse",
+            "type": "object"
+        },
+        "GetTransactionsResponse": {
+            "properties": {
+                "iteratorToken": {
+                    "type": "string"
+                },
+                "transactions": {
+                    "items": {
+                        "$ref": "#/definitions/BitcoinTransaction"
+                    },
+                    "type": "array"
+                }
+            },
+            "title": "GetTransactionsResponse",
+            "type": "object"
+        },
+        "GroupQuery": {
+            "description": "A disjunctive or conjunctive query over Bitcoin blocks.",
+            "properties": {
+                "op": {
+                    "enum": [
+                        "and",
+                        "or"
+                    ],
+                    "type": "string"
+                },
+                "queries": {
+                    "items": {
+                        "$ref": "#/definitions/BitcoinQuery"
+                    },
+                    "type": "array"
+                }
+            },
+            "title": "GroupQuery",
+            "type": "object"
+        },
+        "InputDetails": {
+            "description": "Details of a single Bitcoin transaction input.",
+            "properties": {
+                "script": {
+                    "description": "Unlocking script ASM used for this transaction input.",
+                    "type": "string"
+                },
+                "sequence": {
+                    "format": "int64",
+                    "type": "integer"
+                },
+                "txWitness": {
+                    "description": "List of witnesses, one for each input if this is a SegWit transaction.",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": "array"
+                }
+            },
+            "title": "InputDetails",
+            "type": "object"
+        },
+        "ListAddressUsagesResponse": {
+            "properties": {
+                "address": {
+                    "$ref": "#/definitions/BitcoinAddress"
+                },
+                "page": {
+                    "$ref": "#/definitions/Page"
+                },
+                "usages": {
+                    "items": {
+                        "$ref": "#/definitions/Usage"
+                    },
+                    "type": "array"
+                }
+            },
+            "title": "ListAddressUsagesResponse",
+            "type": "object"
+        },
+        "ListBlockTransactionsResponse": {
+            "description": "The response to list bitcoin transactions from a single block.",
+            "properties": {
+                "block": {
+                    "$ref": "#/definitions/BitcoinBlock",
+                    "description": "The containing block"
+                },
+                "page": {
+                    "$ref": "#/definitions/Page"
+                },
+                "transactions": {
+                    "description": "The requested transactions.",
+                    "items": {
+                        "$ref": "#/definitions/BitcoinTransaction"
+                    },
+                    "type": "array"
+                }
+            },
+            "title": "ListBlockTransactionsResponse",
+            "type": "object"
+        },
+        "ListBlocksResponse": {
+            "description": "Response to request to fetch a list of blocks.",
+            "properties": {
+                "blocks": {
+                    "description": "The requested bitcoin blocks.",
+                    "items": {
+                        "$ref": "#/definitions/BitcoinBlock"
+                    },
+                    "type": "array"
+                },
+                "page": {
+                    "$ref": "#/definitions/Page"
+                }
+            },
+            "title": "ListBlocksResponse",
+            "type": "object"
+        },
+        "ListTransactionInputsResponse": {
+            "description": "The response to a request to list bitcoin transactions inputs.",
+            "properties": {
+                "inputs": {
+                    "description": "The requested transaction inputs.",
+                    "items": {
+                        "$ref": "#/definitions/BitcoinInput"
+                    },
+                    "type": "array"
+                },
+                "page": {
+                    "$ref": "#/definitions/Page"
+                },
+                "transaction": {
+                    "$ref": "#/definitions/BitcoinTransaction",
+                    "description": "The transaction containing the listed inputs."
+                }
+            },
+            "title": "ListTransactionInputsResponse",
+            "type": "object"
+        },
+        "ListTransactionOutputsResponse": {
+            "description": "The response to a request to list bitcoin transaction outputs.",
+            "properties": {
+                "outputs": {
+                    "description": "The requested outputs.",
+                    "items": {
+                        "$ref": "#/definitions/BitcoinOutput"
+                    },
+                    "type": "array"
+                },
+                "page": {
+                    "$ref": "#/definitions/Page"
+                },
+                "transaction": {
+                    "$ref": "#/definitions/BitcoinTransaction",
+                    "description": "The transaction that contains the listed outputs."
+                }
+            },
+            "title": "ListTransactionOutputsResponse",
+            "type": "object"
+        },
+        "ListTransactionsResponse": {
+            "description": "The response to list bitcoin transactions.",
+            "properties": {
+                "page": {
+                    "$ref": "#/definitions/Page"
+                },
+                "transactions": {
+                    "description": "The requested transactions.",
+                    "items": {
+                        "$ref": "#/definitions/BitcoinTransaction"
+                    },
+                    "type": "array"
+                }
+            },
+            "title": "ListTransactionsResponse",
+            "type": "object"
+        },
+        "OutputDetails": {
+            "description": "Details for a Bitcoin Transaction Output.",
+            "properties": {
+                "script": {
+                    "description": "ASM Locking Script of of this transaction.",
+                    "type": "string"
+                },
+                "scriptType": {
+                    "description": "The type of locking script employed.",
+                    "type": "string"
+                }
+            },
+            "title": "OutputDetails",
+            "type": "object"
+        },
+        "Page": {
+            "properties": {
+                "nextPageToken": {
+                    "format": "byte",
+                    "type": "string"
+                }
+            },
+            "title": "Page",
+            "type": "object"
+        },
+        "Summary": {
+            "properties": {
+                "inputsCount": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "outputsCount": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "transactionValue": {
+                    "format": "double",
+                    "type": "number"
+                }
+            },
+            "title": "Summary",
+            "type": "object"
+        },
+        "TimeWindow": {
+            "description": "Constrain a transaction query around two points in time",
+            "properties": {
+                "maxTime": {
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "minTime": {
+                    "format": "date-time",
+                    "type": "string"
+                }
+            },
+            "title": "TimeWindow",
+            "type": "object"
+        },
+        "Usage": {
+            "description": "One usage of a bitcoin address, where the \"incoming\" transaction has sent value to the address,\n and optionally the \"outgoing\" transaction has used the value from the address.",
+            "properties": {
+                "bitcoinValue": {
+                    "format": "double",
+                    "type": "number"
+                },
+                "in": {
+                    "$ref": "#/definitions/UsageIn"
+                },
+                "multipleSignatures": {
+                    "type": "boolean"
+                },
+                "out": {
+                    "$ref": "#/definitions/UsageOut"
+                }
+            },
+            "title": "Usage",
+            "type": "object"
+        },
+        "UsageIn": {
+            "description": "Incoming transaction information to address usage (output from transaction).",
+            "properties": {
+                "medianTime": {
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "minerTime": {
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "outputIndex": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "transactionName": {
+                    "type": "string"
+                }
+            },
+            "title": "UsageIn",
+            "type": "object"
+        },
+        "UsageOut": {
+            "description": "Outgoing transaction information from address usage (input to transaction).",
+            "properties": {
+                "medianTime": {
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "minerTime": {
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "transactionName": {
+                    "type": "string"
+                }
+            },
+            "title": "UsageOut",
+            "type": "object"
+        }
+    },
+    "host": "api.blocwatch.com",
+    "info": {
+        "contact": {
+            "email": "support@blocwatch.com",
+            "name": "Support",
+            "url": "https://www.blocwatch.com/support"
+        },
+        "description": "The premier crypto API for blockchain analysis",
+        "license": {
+            "name": "License of API",
+            "url": "https://www.blocwatch.com/license"
+        },
+        "termsOfService": "https://www.blocwatch.com/tos",
+        "title": "Blocwatch REST API",
+        "version": "Alpha v.0.0.1"
+    },
+    "paths": {
+        "/v1/bitcoin/addresses/{id}": {
+            "get": {
+                "deprecated": false,
+                "operationId": "getAddress",
+                "parameters": [
+                    {
+                        "description": "id",
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "collectionFormat": "multi",
+                        "default": "basic",
+                        "description": "include",
+                        "enum": [
+                            "BASIC",
+                            "SUMMARY"
+                        ],
+                        "in": "query",
+                        "items": {
+                            "enum": [
+                                "BASIC",
+                                "SUMMARY"
+                            ],
+                            "type": "string"
+                        },
+                        "name": "include",
+                        "required": false,
+                        "type": "array"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/GetAddressResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": []
+                    }
+                ],
+                "summary": "getAddress",
+                "tags": [
+                    "Bitcoin Addresses"
+                ]
+            }
+        },
+        "/v1/bitcoin/addresses/{id}/usages": {
+            "get": {
+                "deprecated": false,
+                "operationId": "listAddressUsages",
+                "parameters": [
+                    {
+                        "description": "id",
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "format": "int32",
+                        "in": "query",
+                        "name": "pageLimit",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageToken",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ListAddressUsagesResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": []
+                    }
+                ],
+                "summary": "listAddressUsages",
+                "tags": [
+                    "Bitcoin Addresses"
+                ]
+            }
+        },
+        "/v1/bitcoin/blocks": {
+            "get": {
+                "deprecated": false,
+                "operationId": "listBlocks",
+                "parameters": [
+                    {
+                        "format": "int32",
+                        "in": "query",
+                        "name": "confirmationsMax",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "format": "int32",
+                        "in": "query",
+                        "name": "confirmationsMin",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "format": "int32",
+                        "in": "query",
+                        "name": "heightMax",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "format": "int32",
+                        "in": "query",
+                        "name": "heightMin",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "collectionFormat": "multi",
+                        "in": "query",
+                        "items": {
+                            "type": "string"
+                        },
+                        "name": "ids",
+                        "required": false,
+                        "type": "array"
+                    },
+                    {
+                        "collectionFormat": "multi",
+                        "default": "basic",
+                        "description": "include",
+                        "enum": [
+                            "BASIC",
+                            "SUMMARY",
+                            "DETAILS"
+                        ],
+                        "in": "query",
+                        "items": {
+                            "enum": [
+                                "BASIC",
+                                "SUMMARY",
+                                "DETAILS"
+                            ],
+                            "type": "string"
+                        },
+                        "name": "include",
+                        "required": false,
+                        "type": "array"
+                    },
+                    {
+                        "format": "int32",
+                        "in": "query",
+                        "name": "pageLimit",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageToken",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "format": "date-time",
+                        "in": "query",
+                        "name": "timeMax",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "format": "date-time",
+                        "in": "query",
+                        "name": "timeMin",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "enum": [
+                            "MINER",
+                            "MEDIAN"
+                        ],
+                        "in": "query",
+                        "name": "timeType",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ListBlocksResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": []
+                    }
+                ],
+                "summary": "listBlocks",
+                "tags": [
+                    "Bitcoin Blocks"
+                ]
+            }
+        },
+        "/v1/bitcoin/blocks/top": {
+            "get": {
+                "deprecated": false,
+                "operationId": "getTopBlock",
+                "parameters": [
+                    {
+                        "collectionFormat": "multi",
+                        "default": "basic",
+                        "description": "include",
+                        "enum": [
+                            "BASIC",
+                            "SUMMARY",
+                            "DETAILS"
+                        ],
+                        "in": "query",
+                        "items": {
+                            "enum": [
+                                "BASIC",
+                                "SUMMARY",
+                                "DETAILS"
+                            ],
+                            "type": "string"
+                        },
+                        "name": "include",
+                        "required": false,
+                        "type": "array"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/GetBlockResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": []
+                    }
+                ],
+                "summary": "getTopBlock",
+                "tags": [
+                    "Bitcoin Blocks"
+                ]
+            }
+        },
+        "/v1/bitcoin/blocks/{id}": {
+            "get": {
+                "deprecated": false,
+                "operationId": "getBlock",
+                "parameters": [
+                    {
+                        "description": "id",
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "collectionFormat": "multi",
+                        "default": "basic",
+                        "description": "include",
+                        "enum": [
+                            "BASIC",
+                            "SUMMARY",
+                            "DETAILS"
+                        ],
+                        "in": "query",
+                        "items": {
+                            "enum": [
+                                "BASIC",
+                                "SUMMARY",
+                                "DETAILS"
+                            ],
+                            "type": "string"
+                        },
+                        "name": "include",
+                        "required": false,
+                        "type": "array"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/GetBlockResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": []
+                    }
+                ],
+                "summary": "getBlock",
+                "tags": [
+                    "Bitcoin Blocks"
+                ]
+            }
+        },
+        "/v1/bitcoin/blocks/{id}/transactions": {
+            "get": {
+                "deprecated": false,
+                "operationId": "listBlockTransactions",
+                "parameters": [
+                    {
+                        "description": "id",
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "collectionFormat": "multi",
+                        "default": "basic",
+                        "description": "include",
+                        "enum": [
+                            "DETAILS",
+                            "BASIC",
+                            "SUMMARY"
+                        ],
+                        "in": "query",
+                        "items": {
+                            "enum": [
+                                "DETAILS",
+                                "BASIC",
+                                "SUMMARY"
+                            ],
+                            "type": "string"
+                        },
+                        "name": "include",
+                        "required": false,
+                        "type": "array"
+                    },
+                    {
+                        "format": "int32",
+                        "in": "query",
+                        "name": "pageLimit",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageToken",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ListBlockTransactionsResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": []
+                    }
+                ],
+                "summary": "listBlockTransactions",
+                "tags": [
+                    "Bitcoin Blocks"
+                ]
+            }
+        },
+        "/v1/bitcoin/transactions": {
+            "get": {
+                "deprecated": false,
+                "operationId": "listTransactions",
+                "parameters": [
+                    {
+                        "format": "int32",
+                        "in": "query",
+                        "name": "confirmationsMax",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "format": "int32",
+                        "in": "query",
+                        "name": "confirmationsMin",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "format": "int32",
+                        "in": "query",
+                        "name": "heightMax",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "format": "int32",
+                        "in": "query",
+                        "name": "heightMin",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "collectionFormat": "multi",
+                        "in": "query",
+                        "items": {
+                            "type": "string"
+                        },
+                        "name": "ids",
+                        "required": false,
+                        "type": "array"
+                    },
+                    {
+                        "collectionFormat": "multi",
+                        "default": "basic",
+                        "description": "include",
+                        "enum": [
+                            "DETAILS",
+                            "BASIC",
+                            "SUMMARY"
+                        ],
+                        "in": "query",
+                        "items": {
+                            "enum": [
+                                "DETAILS",
+                                "BASIC",
+                                "SUMMARY"
+                            ],
+                            "type": "string"
+                        },
+                        "name": "include",
+                        "required": false,
+                        "type": "array"
+                    },
+                    {
+                        "format": "int32",
+                        "in": "query",
+                        "name": "inputsMax",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "format": "int32",
+                        "in": "query",
+                        "name": "inputsMin",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "format": "date-time",
+                        "in": "query",
+                        "name": "maxTime",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "format": "date-time",
+                        "in": "query",
+                        "name": "minTime",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "format": "int32",
+                        "in": "query",
+                        "name": "outputsMax",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "format": "int32",
+                        "in": "query",
+                        "name": "outputsMin",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "format": "int32",
+                        "in": "query",
+                        "name": "pageLimit",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageToken",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "collectionFormat": "multi",
+                        "in": "query",
+                        "items": {
+                            "type": "string"
+                        },
+                        "name": "payees",
+                        "required": false,
+                        "type": "array"
+                    },
+                    {
+                        "collectionFormat": "multi",
+                        "in": "query",
+                        "items": {
+                            "type": "string"
+                        },
+                        "name": "payers",
+                        "required": false,
+                        "type": "array"
+                    },
+                    {
+                        "format": "double",
+                        "in": "query",
+                        "name": "valueMax",
+                        "required": false,
+                        "type": "number"
+                    },
+                    {
+                        "format": "double",
+                        "in": "query",
+                        "name": "valueMin",
+                        "required": false,
+                        "type": "number"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ListTransactionsResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": []
+                    }
+                ],
+                "summary": "listTransactions",
+                "tags": [
+                    "Bitcoin Transactions"
+                ]
+            }
+        },
+        "/v1/bitcoin/transactions/iterators": {
+            "get": {
+                "deprecated": false,
+                "operationId": "getTransactions",
+                "parameters": [
+                    {
+                        "description": "batchSize",
+                        "format": "int32",
+                        "in": "query",
+                        "name": "batchSize",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "description": "iteratorToken",
+                        "in": "query",
+                        "name": "iteratorToken",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/GetTransactionsResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": []
+                    }
+                ],
+                "summary": "getTransactions",
+                "tags": [
+                    "Bitcoin Transaction Iterators"
+                ]
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "deprecated": false,
+                "operationId": "createIterator",
+                "parameters": [
+                    {
+                        "collectionFormat": "multi",
+                        "default": "basic",
+                        "description": "include",
+                        "enum": [
+                            "DETAILS",
+                            "BASIC",
+                            "SUMMARY"
+                        ],
+                        "in": "query",
+                        "items": {
+                            "enum": [
+                                "DETAILS",
+                                "BASIC",
+                                "SUMMARY"
+                            ],
+                            "type": "string"
+                        },
+                        "name": "include",
+                        "required": false,
+                        "type": "array"
+                    },
+                    {
+                        "description": "request",
+                        "in": "body",
+                        "name": "request",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/CreateIteratorRequest"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/CreateIteratorResponse"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": []
+                    }
+                ],
+                "summary": "createIterator",
+                "tags": [
+                    "Bitcoin Transaction Iterators"
+                ]
+            }
+        },
+        "/v1/bitcoin/transactions/search": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "deprecated": false,
+                "operationId": "searchTransactions",
+                "parameters": [
+                    {
+                        "collectionFormat": "multi",
+                        "default": "basic",
+                        "description": "include",
+                        "enum": [
+                            "DETAILS",
+                            "BASIC",
+                            "SUMMARY"
+                        ],
+                        "in": "query",
+                        "items": {
+                            "enum": [
+                                "DETAILS",
+                                "BASIC",
+                                "SUMMARY"
+                            ],
+                            "type": "string"
+                        },
+                        "name": "include",
+                        "required": false,
+                        "type": "array"
+                    },
+                    {
+                        "format": "int32",
+                        "in": "query",
+                        "name": "pageLimit",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageToken",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "searchRequest",
+                        "in": "body",
+                        "name": "searchRequest",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/BitcoinSearchRequest"
+                        }
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ListTransactionsResponse"
+                        }
+                    },
+                    "201": {
+                        "description": "Created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": []
+                    }
+                ],
+                "summary": "searchTransactions",
+                "tags": [
+                    "Bitcoin Transactions"
+                ]
+            }
+        },
+        "/v1/bitcoin/transactions/{id}": {
+            "get": {
+                "deprecated": false,
+                "operationId": "getTransaction",
+                "parameters": [
+                    {
+                        "description": "id",
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "collectionFormat": "multi",
+                        "default": "basic",
+                        "description": "include",
+                        "enum": [
+                            "DETAILS",
+                            "BASIC",
+                            "SUMMARY"
+                        ],
+                        "in": "query",
+                        "items": {
+                            "enum": [
+                                "DETAILS",
+                                "BASIC",
+                                "SUMMARY"
+                            ],
+                            "type": "string"
+                        },
+                        "name": "include",
+                        "required": false,
+                        "type": "array"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/GetTransactionResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": []
+                    }
+                ],
+                "summary": "getTransaction",
+                "tags": [
+                    "Bitcoin Transactions"
+                ]
+            }
+        },
+        "/v1/bitcoin/transactions/{id}/inputs": {
+            "get": {
+                "deprecated": false,
+                "operationId": "listTransactionsInputs",
+                "parameters": [
+                    {
+                        "description": "id",
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "collectionFormat": "multi",
+                        "default": "basic",
+                        "description": "include",
+                        "enum": [
+                            "BASIC",
+                            "DETAILS"
+                        ],
+                        "in": "query",
+                        "items": {
+                            "enum": [
+                                "BASIC",
+                                "DETAILS"
+                            ],
+                            "type": "string"
+                        },
+                        "name": "include",
+                        "required": false,
+                        "type": "array"
+                    },
+                    {
+                        "format": "int32",
+                        "in": "query",
+                        "name": "pageLimit",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageToken",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ListTransactionInputsResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": []
+                    }
+                ],
+                "summary": "listTransactionsInputs",
+                "tags": [
+                    "Bitcoin Transactions"
+                ]
+            }
+        },
+        "/v1/bitcoin/transactions/{id}/inputs/{index}": {
+            "get": {
+                "deprecated": false,
+                "operationId": "getTransactionInput",
+                "parameters": [
+                    {
+                        "description": "id",
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "collectionFormat": "multi",
+                        "default": "basic",
+                        "description": "include",
+                        "enum": [
+                            "BASIC",
+                            "DETAILS"
+                        ],
+                        "in": "query",
+                        "items": {
+                            "enum": [
+                                "BASIC",
+                                "DETAILS"
+                            ],
+                            "type": "string"
+                        },
+                        "name": "include",
+                        "required": false,
+                        "type": "array"
+                    },
+                    {
+                        "description": "index",
+                        "format": "int32",
+                        "in": "path",
+                        "name": "index",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/GetTransactionInputResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": []
+                    }
+                ],
+                "summary": "getTransactionInput",
+                "tags": [
+                    "Bitcoin Transactions"
+                ]
+            }
+        },
+        "/v1/bitcoin/transactions/{id}/outputs": {
+            "get": {
+                "deprecated": false,
+                "operationId": "listTransactionsOutputs",
+                "parameters": [
+                    {
+                        "description": "id",
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "collectionFormat": "multi",
+                        "default": "basic",
+                        "description": "include",
+                        "enum": [
+                            "BASIC",
+                            "DETAILS"
+                        ],
+                        "in": "query",
+                        "items": {
+                            "enum": [
+                                "BASIC",
+                                "DETAILS"
+                            ],
+                            "type": "string"
+                        },
+                        "name": "include",
+                        "required": false,
+                        "type": "array"
+                    },
+                    {
+                        "format": "int32",
+                        "in": "query",
+                        "name": "pageLimit",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "in": "query",
+                        "name": "pageToken",
+                        "required": false,
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ListTransactionOutputsResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": []
+                    }
+                ],
+                "summary": "listTransactionsOutputs",
+                "tags": [
+                    "Bitcoin Transactions"
+                ]
+            }
+        },
+        "/v1/bitcoin/transactions/{id}/outputs/{index}": {
+            "get": {
+                "deprecated": false,
+                "operationId": "getTransactionOutput",
+                "parameters": [
+                    {
+                        "description": "id",
+                        "in": "path",
+                        "name": "id",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "collectionFormat": "multi",
+                        "default": "basic",
+                        "description": "include",
+                        "enum": [
+                            "BASIC",
+                            "DETAILS"
+                        ],
+                        "in": "query",
+                        "items": {
+                            "enum": [
+                                "BASIC",
+                                "DETAILS"
+                            ],
+                            "type": "string"
+                        },
+                        "name": "include",
+                        "required": false,
+                        "type": "array"
+                    },
+                    {
+                        "description": "index",
+                        "format": "int32",
+                        "in": "path",
+                        "name": "index",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/GetTransactionOutputResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": []
+                    }
+                ],
+                "summary": "getTransactionOutput",
+                "tags": [
+                    "Bitcoin Transactions"
+                ]
+            }
+        }
+    },
+    "securityDefinitions": {
+        "oauth2": {
+            "authorizationUrl": "https://api.blocwatch.com/oauth/authorize",
+            "flow": "accessCode",
+            "tokenUrl": "https://api.blocwatch.com/oauth/token",
+            "type": "oauth2"
+        }
+    },
+    "swagger": "2.0",
+    "tags": [
+        {
+            "description": "Bitcoin Address Controller",
+            "name": "Bitcoin Addresses"
+        },
+        {
+            "description": "Bitcoin Block Controller",
+            "name": "Bitcoin Blocks"
+        },
+        {
+            "description": "Bitcoin Iterator Controller",
+            "name": "Bitcoin Transaction Iterators"
+        },
+        {
+            "description": "Bitcoin Transaction Controller",
+            "name": "Bitcoin Transactions"
+        }
+    ]
+}
