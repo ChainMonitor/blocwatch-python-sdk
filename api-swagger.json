@@ -36,7 +36,7 @@
                     "type": "integer"
                 },
                 "medianTime": {
-                    "description": "The median time of this block.\n\n <p>The median time is defined as the median of the time of the previous 11 mined blocks.",
+                    "description": "The median time of this block.\n\n \n<p>\nThe median time is defined as the median of the time of the previous 11 mined blocks.",
                     "format": "date-time",
                     "type": "string"
                 },
@@ -180,7 +180,6 @@
                     "type": "integer"
                 },
                 "transactionName": {
-                    "description": "@return the name of the transaction that consumed this output value",
                     "type": "string"
                 }
             },
@@ -188,15 +187,15 @@
             "type": "object"
         },
         "BitcoinQuery": {
-            "description": "A search expression over Bitcoin blocks.\n\n <p>A BitcoinQueryExpression can contain either a comparison or grouping query. Comparison queries\n are standard equality-type comparisons on defined fields of the BlocWatch model. Group queries\n can be used to create conjunctive or disjunctive sets of comparison queries.\n\n <p>One of group_query or compare_query should be specified, but not both.",
+            "description": "A search expression over Bitcoin blocks.\n\n \n<p>\nA BitcoinQueryExpression can contain either a comparison or grouping query. Comparison queries\n are standard equality-type comparisons on defined fields of the BlocWatch model. Group queries\n can be used to create conjunctive or disjunctive sets of comparison queries.\n\n \n<p>\nOne of group_query or compare_query should be specified, but not both.",
             "properties": {
                 "compareQuery": {
                     "$ref": "#/definitions/BitcoinCompareQuery",
-                    "description": "A comparison-based query on Bitcoin fields.\n\n <p>The group query and the compare query are exclusive options, only one may set."
+                    "description": "A comparison-based query on Bitcoin fields.\n\n \n<p>\nThe group query and the compare query are exclusive options, only one may set."
                 },
                 "groupQuery": {
                     "$ref": "#/definitions/GroupQuery",
-                    "description": "A conjunctive (and) or disjunctive (or) query.\n\n <p>The group query and the compare query are exclusive options, only one may set."
+                    "description": "A conjunctive (and) or disjunctive (or) query.\n\n \n<p>\nThe group query and the compare query are exclusive options, only one may set."
                 }
             },
             "title": "BitcoinQuery",
@@ -206,10 +205,11 @@
             "properties": {
                 "query": {
                     "$ref": "#/definitions/BitcoinQuery",
-                    "description": "The query object"
+                    "description": "A Query that specifies entities to return."
                 },
                 "timeWindow": {
-                    "$ref": "#/definitions/TimeWindow"
+                    "$ref": "#/definitions/TimeWindow",
+                    "description": "A TimeWindow that restricts this search."
                 }
             },
             "title": "BitcoinSearchRequest",
@@ -249,7 +249,7 @@
             "type": "object"
         },
         "CreateIteratorRequest": {
-            "description": "A request to create an iterator. Iterators have multiple types.\n\n <p>FROM_BLOCK_HEIGHT must have fromBlockHeight set FROM_TIMESTAMP must have fromTimestamp set\n\n <p>For FROM_BEGINNING and FROM_CHAIN_TIP no other arguments are necessary.\n\n <p>Optional query can be provided, and will act as a filter on any records that are returned",
+            "description": "A request to create an iterator. Iterators have multiple types.\n\n \n<p>\nFROM_BLOCK_HEIGHT must have fromBlockHeight set FROM_TIMESTAMP must have fromTimestamp set\n\n \n<p>\nFor FROM_BEGINNING and FROM_CHAIN_TIP no other arguments are necessary.\n\n \n<p>\nOptional query can be provided, and will act as a filter on any records that are returned",
             "properties": {
                 "bitcoinTimeType": {
                     "enum": [
@@ -410,6 +410,33 @@
                 }
             },
             "title": "GroupQuery",
+            "type": "object"
+        },
+        "GroupedSummary": {
+            "description": "Summary of a group of transactions starting at the given time.",
+            "properties": {
+                "bitcoinValue": {
+                    "format": "double",
+                    "type": "number"
+                },
+                "inputsCount": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "outputsCount": {
+                    "format": "int32",
+                    "type": "integer"
+                },
+                "time": {
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "transactionsCount": {
+                    "format": "int32",
+                    "type": "integer"
+                }
+            },
+            "title": "GroupedSummary",
             "type": "object"
         },
         "InputDetails": {
@@ -574,6 +601,20 @@
             "title": "Page",
             "type": "object"
         },
+        "SummarizeTransactionsResponse": {
+            "description": "The response to summarize bitcoin transactions.",
+            "properties": {
+                "summaries": {
+                    "description": "The requested summaries.",
+                    "items": {
+                        "$ref": "#/definitions/GroupedSummary"
+                    },
+                    "type": "array"
+                }
+            },
+            "title": "SummarizeTransactionsResponse",
+            "type": "object"
+        },
         "Summary": {
             "properties": {
                 "inputsCount": {
@@ -668,21 +709,21 @@
             "type": "object"
         }
     },
-    "host": "api.blocwatch.com",
+    "host": "localhost:8080",
     "info": {
         "contact": {
             "email": "support@blocwatch.com",
             "name": "Support",
             "url": "https://www.blocwatch.com/"
         },
-        "description": "The premier crypto API for blockchain analysis",
+        "description": "The premier API for blockchain analysis",
         "license": {
             "name": "License of API",
             "url": "https://www.blocwatch.com/license"
         },
         "termsOfService": "https://www.blocwatch.com/tos",
         "title": "Blocwatch REST API",
-        "version": "Alpha v.0.0.1"
+        "version": "v1.0.0"
     },
     "paths": {
         "/v1/bitcoin/addresses/{id}": {
@@ -691,7 +732,7 @@
                 "operationId": "getAddress",
                 "parameters": [
                     {
-                        "description": "id",
+                        "description": "The address for which details should be fetched.",
                         "in": "path",
                         "name": "id",
                         "required": true,
@@ -700,7 +741,7 @@
                     {
                         "collectionFormat": "multi",
                         "default": "basic",
-                        "description": "include",
+                        "description": "Specify information to include with the address.",
                         "enum": [
                             "BASIC",
                             "SUMMARY"
@@ -743,7 +784,7 @@
                         "oauth2": []
                     }
                 ],
-                "summary": "getAddress",
+                "summary": "Fetch details about a single address.",
                 "tags": [
                     "Bitcoin Addresses"
                 ]
@@ -755,7 +796,7 @@
                 "operationId": "listAddressUsages",
                 "parameters": [
                     {
-                        "description": "id",
+                        "description": "The address for which usages should be fetched.",
                         "in": "path",
                         "name": "id",
                         "required": true,
@@ -800,7 +841,7 @@
                         "oauth2": []
                     }
                 ],
-                "summary": "listAddressUsages",
+                "summary": "List usages for a single address.",
                 "tags": [
                     "Bitcoin Addresses"
                 ]
@@ -852,7 +893,7 @@
                     {
                         "collectionFormat": "multi",
                         "default": "basic",
-                        "description": "include",
+                        "description": "Specify which information to include in returned blocks.",
                         "enum": [
                             "BASIC",
                             "SUMMARY",
@@ -934,7 +975,7 @@
                         "oauth2": []
                     }
                 ],
-                "summary": "listBlocks",
+                "summary": "List blocks matching given criteria.",
                 "tags": [
                     "Bitcoin Blocks"
                 ]
@@ -948,7 +989,7 @@
                     {
                         "collectionFormat": "multi",
                         "default": "basic",
-                        "description": "include",
+                        "description": "Information to include with the block.",
                         "enum": [
                             "BASIC",
                             "SUMMARY",
@@ -993,7 +1034,7 @@
                         "oauth2": []
                     }
                 ],
-                "summary": "getTopBlock",
+                "summary": "Fetch the most recent accepted block.",
                 "tags": [
                     "Bitcoin Blocks"
                 ]
@@ -1005,7 +1046,7 @@
                 "operationId": "getBlock",
                 "parameters": [
                     {
-                        "description": "id",
+                        "description": "The hash of the block to fetch.",
                         "in": "path",
                         "name": "id",
                         "required": true,
@@ -1014,7 +1055,7 @@
                     {
                         "collectionFormat": "multi",
                         "default": "basic",
-                        "description": "include",
+                        "description": "Information to include with the block.",
                         "enum": [
                             "BASIC",
                             "SUMMARY",
@@ -1059,7 +1100,7 @@
                         "oauth2": []
                     }
                 ],
-                "summary": "getBlock",
+                "summary": "Get a single block by block hash.",
                 "tags": [
                     "Bitcoin Blocks"
                 ]
@@ -1071,7 +1112,7 @@
                 "operationId": "listBlockTransactions",
                 "parameters": [
                     {
-                        "description": "id",
+                        "description": "Block-hash for which information should be returned.",
                         "in": "path",
                         "name": "id",
                         "required": true,
@@ -1080,7 +1121,7 @@
                     {
                         "collectionFormat": "multi",
                         "default": "basic",
-                        "description": "include",
+                        "description": "Specify which information to include in returned transactions.",
                         "enum": [
                             "DETAILS",
                             "BASIC",
@@ -1138,7 +1179,7 @@
                         "oauth2": []
                     }
                 ],
-                "summary": "listBlockTransactions",
+                "summary": "List transactions within a single block.",
                 "tags": [
                     "Bitcoin Blocks"
                 ]
@@ -1190,7 +1231,7 @@
                     {
                         "collectionFormat": "multi",
                         "default": "basic",
-                        "description": "include",
+                        "description": "Specify which information to include with transactions.",
                         "enum": [
                             "DETAILS",
                             "BASIC",
@@ -1324,7 +1365,7 @@
                         "oauth2": []
                     }
                 ],
-                "summary": "listTransactions",
+                "summary": "List transactions matching a given criteria.",
                 "tags": [
                     "Bitcoin Transactions"
                 ]
@@ -1376,7 +1417,6 @@
                         "oauth2": []
                     }
                 ],
-                "summary": "getTransactions",
                 "tags": [
                     "Bitcoin Transaction Iterators"
                 ]
@@ -1448,7 +1488,6 @@
                         "oauth2": []
                     }
                 ],
-                "summary": "createIterator",
                 "tags": [
                     "Bitcoin Transaction Iterators"
                 ]
@@ -1465,7 +1504,7 @@
                     {
                         "collectionFormat": "multi",
                         "default": "basic",
-                        "description": "include",
+                        "description": "Specify which information to include with transactions.",
                         "enum": [
                             "DETAILS",
                             "BASIC",
@@ -1535,7 +1574,70 @@
                         "oauth2": []
                     }
                 ],
-                "summary": "searchTransactions",
+                "summary": "Search transactions matching a given criteria.",
+                "tags": [
+                    "Bitcoin Transactions"
+                ]
+            }
+        },
+        "/v1/bitcoin/transactions/summary/by/{unit}": {
+            "get": {
+                "deprecated": false,
+                "operationId": "summarizeTransactions",
+                "parameters": [
+                    {
+                        "format": "date-time",
+                        "in": "query",
+                        "name": "maxTime",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "format": "date-time",
+                        "in": "query",
+                        "name": "minTime",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "description": "unit",
+                        "enum": [
+                            "HOUR",
+                            "DAY",
+                            "WEEK",
+                            "MONTH"
+                        ],
+                        "in": "path",
+                        "name": "unit",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/SummarizeTransactionsResponse"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "oauth2": []
+                    }
+                ],
                 "tags": [
                     "Bitcoin Transactions"
                 ]
@@ -1547,7 +1649,7 @@
                 "operationId": "getTransaction",
                 "parameters": [
                     {
-                        "description": "id",
+                        "description": "The transaction hash for which details should be fetched.",
                         "in": "path",
                         "name": "id",
                         "required": true,
@@ -1556,7 +1658,7 @@
                     {
                         "collectionFormat": "multi",
                         "default": "basic",
-                        "description": "include",
+                        "description": "Specify what should be included in the response.",
                         "enum": [
                             "DETAILS",
                             "BASIC",
@@ -1601,7 +1703,7 @@
                         "oauth2": []
                     }
                 ],
-                "summary": "getTransaction",
+                "summary": "Fetch a single transaction by transaction id.",
                 "tags": [
                     "Bitcoin Transactions"
                 ]
@@ -1613,7 +1715,7 @@
                 "operationId": "listTransactionsInputs",
                 "parameters": [
                     {
-                        "description": "id",
+                        "description": "The hash of the transaction for which inputs should be listed.",
                         "in": "path",
                         "name": "id",
                         "required": true,
@@ -1622,7 +1724,7 @@
                     {
                         "collectionFormat": "multi",
                         "default": "basic",
-                        "description": "include",
+                        "description": "Specify which information to include with transactions inputs.",
                         "enum": [
                             "BASIC",
                             "DETAILS"
@@ -1678,7 +1780,7 @@
                         "oauth2": []
                     }
                 ],
-                "summary": "listTransactionsInputs",
+                "summary": "List inputs for a single transaction.",
                 "tags": [
                     "Bitcoin Transactions"
                 ]
@@ -1690,7 +1792,7 @@
                 "operationId": "getTransactionInput",
                 "parameters": [
                     {
-                        "description": "id",
+                        "description": "The hash of the transaction for which inputs should be listed.",
                         "in": "path",
                         "name": "id",
                         "required": true,
@@ -1699,7 +1801,7 @@
                     {
                         "collectionFormat": "multi",
                         "default": "basic",
-                        "description": "include",
+                        "description": "Specify which information to include with transactions inputs.",
                         "enum": [
                             "BASIC",
                             "DETAILS"
@@ -1717,7 +1819,7 @@
                         "type": "array"
                     },
                     {
-                        "description": "index",
+                        "description": "The 0-based index of the input in the inputs vector ('vin') to fetch.",
                         "format": "int32",
                         "in": "path",
                         "name": "index",
@@ -1750,7 +1852,7 @@
                         "oauth2": []
                     }
                 ],
-                "summary": "getTransactionInput",
+                "summary": "Fetch a single input for a single transaction.",
                 "tags": [
                     "Bitcoin Transactions"
                 ]
@@ -1762,7 +1864,7 @@
                 "operationId": "listTransactionsOutputs",
                 "parameters": [
                     {
-                        "description": "id",
+                        "description": "The hash of the transaction for which outputs should be listed.",
                         "in": "path",
                         "name": "id",
                         "required": true,
@@ -1771,7 +1873,7 @@
                     {
                         "collectionFormat": "multi",
                         "default": "basic",
-                        "description": "include",
+                        "description": "Specify which information to include with transactions output.",
                         "enum": [
                             "BASIC",
                             "DETAILS"
@@ -1827,7 +1929,7 @@
                         "oauth2": []
                     }
                 ],
-                "summary": "listTransactionsOutputs",
+                "summary": "List outputs from a single transaction.",
                 "tags": [
                     "Bitcoin Transactions"
                 ]
@@ -1839,7 +1941,7 @@
                 "operationId": "getTransactionOutput",
                 "parameters": [
                     {
-                        "description": "id",
+                        "description": "The transaction the output belongs to.",
                         "in": "path",
                         "name": "id",
                         "required": true,
@@ -1848,7 +1950,7 @@
                     {
                         "collectionFormat": "multi",
                         "default": "basic",
-                        "description": "include",
+                        "description": "Specify which information to include with the transaction output.",
                         "enum": [
                             "BASIC",
                             "DETAILS"
@@ -1866,7 +1968,7 @@
                         "type": "array"
                     },
                     {
-                        "description": "index",
+                        "description": "The 0-based index into the transaction's output vector (vout).",
                         "format": "int32",
                         "in": "path",
                         "name": "index",
@@ -1899,7 +2001,7 @@
                         "oauth2": []
                     }
                 ],
-                "summary": "getTransactionOutput",
+                "summary": "Fetch a single output for a single transaction.",
                 "tags": [
                     "Bitcoin Transactions"
                 ]
