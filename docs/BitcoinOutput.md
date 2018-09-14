@@ -10,7 +10,7 @@ Name | Type | Description | Notes
 **miner_time** | **datetime** | The mining time from the containing block of the transaction that consumed this output | [optional] 
 **name** | **str** | The addressable name of this output. | [optional] 
 **output_index** | **int** | The index of this output within the transaction. | [optional] 
-**transaction_name** | **str** | @return the name of the transaction that consumed this output value | [optional] 
+**transaction_name** | **str** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

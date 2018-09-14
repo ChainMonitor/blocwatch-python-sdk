@@ -1,7 +1,6 @@
 # coding: utf-8
 
 # flake8: noqa
-
 """
     Blocwatch REST API
 
@@ -15,16 +14,7 @@
 
 from __future__ import absolute_import
 
-# import apis into sdk package
-from blocwatch_v1.api.bitcoin_addresses_api import BitcoinAddressesApi
-from blocwatch_v1.api.bitcoin_blocks_api import BitcoinBlocksApi
-from blocwatch_v1.api.bitcoin_transaction_iterators_api import BitcoinTransactionIteratorsApi
-from blocwatch_v1.api.bitcoin_transactions_api import BitcoinTransactionsApi
-
-# import ApiClient
-from blocwatch_v1.api_client import ApiClient
-from blocwatch_v1.configuration import Configuration
-# import models into sdk package
+# import models into model package
 from blocwatch_v1.bitcoin.bitcoin_address import BitcoinAddress
 from blocwatch_v1.bitcoin.bitcoin_block import BitcoinBlock
 from blocwatch_v1.bitcoin.bitcoin_compare_query import BitcoinCompareQuery

@@ -1,17 +1,17 @@
 # blocwatch_v1.BitcoinTransactionIteratorsApi
 
-All URIs are relative to *https://api.blocwatch.com*
+All URIs are relative to *https://localhost:8080*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**create_iterator**](BitcoinTransactionIteratorsApi.md#create_iterator) | **POST** /v1/bitcoin/transactions/iterators | createIterator
-[**get_transactions**](BitcoinTransactionIteratorsApi.md#get_transactions) | **GET** /v1/bitcoin/transactions/iterators | getTransactions
+[**create_iterator**](BitcoinTransactionIteratorsApi.md#create_iterator) | **POST** /v1/bitcoin/transactions/iterators | 
+[**get_transactions**](BitcoinTransactionIteratorsApi.md#get_transactions) | **GET** /v1/bitcoin/transactions/iterators | 
 
 
 # **create_iterator**
 > CreateIteratorResponse create_iterator(request, include=include)
 
-createIterator
+
 
 ### Example
 ```python
@@ -31,7 +31,6 @@ request = blocwatch_v1.CreateIteratorRequest() # CreateIteratorRequest | request
 include = ['basic'] # list[str] | include (optional) (default to basic)
 
 try:
-    # createIterator
     api_response = api_instance.create_iterator(request, include=include)
     pprint(api_response)
 except ApiException as e:
@@ -63,7 +62,7 @@ Name | Type | Description  | Notes
 # **get_transactions**
 > GetTransactionsResponse get_transactions(iterator_token, batch_size=batch_size)
 
-getTransactions
+
 
 ### Example
 ```python
@@ -83,7 +82,6 @@ iterator_token = 'iterator_token_example' # str | iteratorToken
 batch_size = 56 # int | batchSize (optional)
 
 try:
-    # getTransactions
     api_response = api_instance.get_transactions(iterator_token, batch_size=batch_size)
     pprint(api_response)
 except ApiException as e:
