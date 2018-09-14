@@ -16,7 +16,7 @@ import re  # noqa: F401
 
 import six
 
-from blocwatch_v1.bitcoin.bitcoin_query import BitcoinQuery  # noqa: F401,E501
+import blocwatch_v1.bitcoin.bitcoin_query  # noqa: F401,E501
 
 
 class CreateIteratorRequest(object):
@@ -207,6 +207,9 @@ class CreateIteratorRequest(object):
                 ))
             else:
                 result[attr] = value
+        if issubclass(CreateIteratorRequest, dict):
+            for key, value in self.items():
+                result[key] = value
 
         return result
 

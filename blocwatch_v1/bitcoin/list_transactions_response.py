@@ -16,8 +16,8 @@ import re  # noqa: F401
 
 import six
 
-from blocwatch_v1.bitcoin.bitcoin_transaction import BitcoinTransaction  # noqa: F401,E501
-from blocwatch_v1.bitcoin.page import Page  # noqa: F401,E501
+import blocwatch_v1.bitcoin.bitcoin_transaction  # noqa: F401,E501
+import blocwatch_v1.bitcoin.page  # noqa: F401,E501
 
 
 class ListTransactionsResponse(object):
@@ -120,6 +120,9 @@ class ListTransactionsResponse(object):
                 ))
             else:
                 result[attr] = value
+        if issubclass(ListTransactionsResponse, dict):
+            for key, value in self.items():
+                result[key] = value
 
         return result
 

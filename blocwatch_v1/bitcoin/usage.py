@@ -16,8 +16,8 @@ import re  # noqa: F401
 
 import six
 
-from blocwatch_v1.bitcoin.usage_in import UsageIn  # noqa: F401,E501
-from blocwatch_v1.bitcoin.usage_out import UsageOut  # noqa: F401,E501
+import blocwatch_v1.bitcoin.usage_in  # noqa: F401,E501
+import blocwatch_v1.bitcoin.usage_out  # noqa: F401,E501
 
 
 class Usage(object):
@@ -170,6 +170,9 @@ class Usage(object):
                 ))
             else:
                 result[attr] = value
+        if issubclass(Usage, dict):
+            for key, value in self.items():
+                result[key] = value
 
         return result
 

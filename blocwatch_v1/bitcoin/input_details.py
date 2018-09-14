@@ -145,6 +145,9 @@ class InputDetails(object):
                 ))
             else:
                 result[attr] = value
+        if issubclass(InputDetails, dict):
+            for key, value in self.items():
+                result[key] = value
 
         return result
 

@@ -193,6 +193,9 @@ class Details(object):
                 ))
             else:
                 result[attr] = value
+        if issubclass(Details, dict):
+            for key, value in self.items():
+                result[key] = value
 
         return result
 

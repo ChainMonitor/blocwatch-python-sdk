@@ -27,7 +27,7 @@ configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # create an instance of the API class
 api_instance = blocwatch_v1.BitcoinTransactionIteratorsApi(blocwatch_v1.ApiClient(configuration))
-request = blocwatch_v1.CreateIteratorRequest() # CreateIteratorRequest | request
+request = blocwatch_v1.CreateIteratorRequest() # blocwatch_v1.bitcoin.CreateIteratorRequest | request
 include = ['basic'] # list[str] | include (optional) (default to basic)
 
 try:
@@ -41,7 +41,7 @@ except ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **request** | [**CreateIteratorRequest**](CreateIteratorRequest.md)| request | 
+ **request** | [**blocwatch_v1.bitcoin.CreateIteratorRequest**](CreateIteratorRequest.md)| request | 
  **include** | [**list[str]**](str.md)| include | [optional] [default to basic]
 
 ### Return type

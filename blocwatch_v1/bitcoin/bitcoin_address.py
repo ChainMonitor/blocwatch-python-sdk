@@ -16,7 +16,7 @@ import re  # noqa: F401
 
 import six
 
-from blocwatch_v1.bitcoin.summary import Summary  # noqa: F401,E501
+import blocwatch_v1.bitcoin.summary  # noqa: F401,E501
 
 
 class BitcoinAddress(object):
@@ -147,6 +147,9 @@ class BitcoinAddress(object):
                 ))
             else:
                 result[attr] = value
+        if issubclass(BitcoinAddress, dict):
+            for key, value in self.items():
+                result[key] = value
 
         return result
 

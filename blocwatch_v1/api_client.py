@@ -265,9 +265,9 @@ class ApiClient(object):
         elif klass == object:
             return self.__deserialize_object(data)
         elif klass == datetime.date:
-            return self.__deserialize_date(data)
+            return self.deserialize_date(data)
         elif klass == datetime.datetime:
-            return self.__deserialize_datatime(data)
+            return self.deserialize_datetime(data)
         else:
             return self.__deserialize_model(data, klass)
 
@@ -541,7 +541,7 @@ class ApiClient(object):
         try:
             return klass(data)
         except UnicodeEncodeError:
-            return six.u(data)
+            return six.text_type(data)
         except TypeError:
             return data
 
@@ -552,7 +552,7 @@ class ApiClient(object):
         """
         return value
 
-    def __deserialize_date(self, string):
+    def deserialize_date(self, string):
         """Deserializes string to date.
 
         :param string: str.
@@ -569,7 +569,7 @@ class ApiClient(object):
                 reason="Failed to parse `{0}` as date object".format(string)
             )
 
-    def __deserialize_datatime(self, string):
+    def deserialize_datetime(self, string):
         """Deserializes string to datetime.
 
         The string should be in iso8601 datetime format.
@@ -614,6 +614,12 @@ class ApiClient(object):
 
         instance = klass(**kwargs)
 
+        if (isinstance(instance, dict) and
+                klass.swagger_types is not None and
+                isinstance(data, dict)):
+            for key, value in data.items():
+                if key not in klass.swagger_types:
+                    instance[key] = value
         if hasattr(instance, 'get_real_child_model'):
             klass_name = instance.get_real_child_model(data)
             if klass_name:

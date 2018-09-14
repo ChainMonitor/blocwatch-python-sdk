@@ -16,7 +16,7 @@ import re  # noqa: F401
 
 import six
 
-from blocwatch_v1.bitcoin.grouped_summary import GroupedSummary  # noqa: F401,E501
+import blocwatch_v1.bitcoin.grouped_summary  # noqa: F401,E501
 
 
 class SummarizeTransactionsResponse(object):
@@ -93,6 +93,9 @@ class SummarizeTransactionsResponse(object):
                 ))
             else:
                 result[attr] = value
+        if issubclass(SummarizeTransactionsResponse, dict):
+            for key, value in self.items():
+                result[key] = value
 
         return result
 

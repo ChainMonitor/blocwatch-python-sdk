@@ -193,6 +193,9 @@ class GroupedSummary(object):
                 ))
             else:
                 result[attr] = value
+        if issubclass(GroupedSummary, dict):
+            for key, value in self.items():
+                result[key] = value
 
         return result
 

@@ -389,7 +389,7 @@ configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # create an instance of the API class
 api_instance = blocwatch_v1.BitcoinTransactionsApi(blocwatch_v1.ApiClient(configuration))
-search_request = blocwatch_v1.BitcoinSearchRequest() # BitcoinSearchRequest | searchRequest
+search_request = blocwatch_v1.BitcoinSearchRequest() # blocwatch_v1.bitcoin.BitcoinSearchRequest | searchRequest
 include = ['basic'] # list[str] | Specify which information to include with transactions. (optional) (default to basic)
 page_limit = 56 # int |  (optional)
 page_token = 'page_token_example' # str |  (optional)
@@ -406,7 +406,7 @@ except ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **search_request** | [**BitcoinSearchRequest**](BitcoinSearchRequest.md)| searchRequest | 
+ **search_request** | [**blocwatch_v1.bitcoin.BitcoinSearchRequest**](BitcoinSearchRequest.md)| searchRequest | 
  **include** | [**list[str]**](str.md)| Specify which information to include with transactions. | [optional] [default to basic]
  **page_limit** | **int**|  | [optional] 
  **page_token** | **str**|  | [optional] 
