@@ -1,17 +1,17 @@
 # blocwatch_v1.BitcoinAddressesApi
 
-All URIs are relative to *https://api.blocwatch.com*
+All URIs are relative to *https://localhost:8080*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**get_address**](BitcoinAddressesApi.md#get_address) | **GET** /v1/bitcoin/addresses/{id} | getAddress
-[**list_address_usages**](BitcoinAddressesApi.md#list_address_usages) | **GET** /v1/bitcoin/addresses/{id}/usages | listAddressUsages
+[**get_address**](BitcoinAddressesApi.md#get_address) | **GET** /v1/bitcoin/addresses/{id} | Fetch details about a single address.
+[**list_address_usages**](BitcoinAddressesApi.md#list_address_usages) | **GET** /v1/bitcoin/addresses/{id}/usages | List usages for a single address.
 
 
 # **get_address**
 > GetAddressResponse get_address(id, include=include)
 
-getAddress
+Fetch details about a single address.
 
 ### Example
 ```python
@@ -27,11 +27,11 @@ configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # create an instance of the API class
 api_instance = blocwatch_v1.BitcoinAddressesApi(blocwatch_v1.ApiClient(configuration))
-id = 'id_example' # str | id
-include = ['basic'] # list[str] | include (optional) (default to basic)
+id = 'id_example' # str | The address for which details should be fetched.
+include = ['basic'] # list[str] | Specify information to include with the address. (optional) (default to basic)
 
 try:
-    # getAddress
+    # Fetch details about a single address.
     api_response = api_instance.get_address(id, include=include)
     pprint(api_response)
 except ApiException as e:
@@ -42,8 +42,8 @@ except ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **str**| id | 
- **include** | [**list[str]**](str.md)| include | [optional] [default to basic]
+ **id** | **str**| The address for which details should be fetched. | 
+ **include** | [**list[str]**](str.md)| Specify information to include with the address. | [optional] [default to basic]
 
 ### Return type
 
@@ -63,7 +63,7 @@ Name | Type | Description  | Notes
 # **list_address_usages**
 > ListAddressUsagesResponse list_address_usages(id, page_limit=page_limit, page_token=page_token)
 
-listAddressUsages
+List usages for a single address.
 
 ### Example
 ```python
@@ -79,12 +79,12 @@ configuration.access_token = 'YOUR_ACCESS_TOKEN'
 
 # create an instance of the API class
 api_instance = blocwatch_v1.BitcoinAddressesApi(blocwatch_v1.ApiClient(configuration))
-id = 'id_example' # str | id
+id = 'id_example' # str | The address for which usages should be fetched.
 page_limit = 56 # int |  (optional)
 page_token = 'page_token_example' # str |  (optional)
 
 try:
-    # listAddressUsages
+    # List usages for a single address.
     api_response = api_instance.list_address_usages(id, page_limit=page_limit, page_token=page_token)
     pprint(api_response)
 except ApiException as e:
@@ -95,7 +95,7 @@ except ApiException as e:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **id** | **str**| id | 
+ **id** | **str**| The address for which usages should be fetched. | 
  **page_limit** | **int**|  | [optional] 
  **page_token** | **str**|  | [optional] 
 

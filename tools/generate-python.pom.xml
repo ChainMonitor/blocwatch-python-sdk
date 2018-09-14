@@ -52,6 +52,7 @@
             <configuration>
               <inputSpec>api-swagger.json</inputSpec>
               <language>python</language>
+              <modelPackage>bitcoin</modelPackage>
               <configOptions>
                 <packageName>blocwatch_v1</packageName>
                 <excludeTests>true</excludeTests>
