@@ -1,0 +1,11 @@
+*.iml
+.idea
+*.code-workspace
+target/
+*/node_modules/
+*/var/log/*
+*.orig
+*.DS_store
+
+*.pyc
+*/__pycache__/
