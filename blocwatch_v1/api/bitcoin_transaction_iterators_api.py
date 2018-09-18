@@ -42,7 +42,7 @@ class BitcoinTransactionIteratorsApi(object):
         >>> result = thread.get()
 
         :param async bool
-        :param CreateIteratorRequest request: request (required)
+        :param blocwatch_v1.bitcoin.CreateIteratorRequest request: request (required)
         :param list[str] include: include
         :return: CreateIteratorResponse
                  If the method is called asynchronously,
@@ -64,7 +64,7 @@ class BitcoinTransactionIteratorsApi(object):
         >>> result = thread.get()
 
         :param async bool
-        :param CreateIteratorRequest request: request (required)
+        :param blocwatch_v1.bitcoin.CreateIteratorRequest request: request (required)
         :param list[str] include: include
         :return: CreateIteratorResponse
                  If the method is called asynchronously,

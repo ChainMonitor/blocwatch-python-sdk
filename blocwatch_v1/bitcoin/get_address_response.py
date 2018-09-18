@@ -16,7 +16,7 @@ import re  # noqa: F401
 
 import six
 
-from blocwatch_v1.bitcoin.bitcoin_address import BitcoinAddress  # noqa: F401,E501
+import blocwatch_v1.bitcoin.bitcoin_address  # noqa: F401,E501
 
 
 class GetAddressResponse(object):
@@ -91,6 +91,9 @@ class GetAddressResponse(object):
                 ))
             else:
                 result[attr] = value
+        if issubclass(GetAddressResponse, dict):
+            for key, value in self.items():
+                result[key] = value
 
         return result
 

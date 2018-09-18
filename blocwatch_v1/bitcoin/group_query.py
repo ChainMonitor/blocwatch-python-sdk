@@ -16,7 +16,7 @@ import re  # noqa: F401
 
 import six
 
-from blocwatch_v1.bitcoin.bitcoin_query import BitcoinQuery  # noqa: F401,E501
+import blocwatch_v1.bitcoin.bitcoin_query  # noqa: F401,E501
 
 
 class GroupQuery(object):
@@ -123,6 +123,9 @@ class GroupQuery(object):
                 ))
             else:
                 result[attr] = value
+        if issubclass(GroupQuery, dict):
+            for key, value in self.items():
+                result[key] = value
 
         return result
 

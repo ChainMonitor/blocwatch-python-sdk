@@ -725,7 +725,7 @@ class BitcoinTransactionsApi(object):
         >>> result = thread.get()
 
         :param async bool
-        :param BitcoinSearchRequest search_request: searchRequest (required)
+        :param blocwatch_v1.bitcoin.BitcoinSearchRequest search_request: searchRequest (required)
         :param list[str] include: Specify which information to include with transactions.
         :param int page_limit:
         :param str page_token:
@@ -749,7 +749,7 @@ class BitcoinTransactionsApi(object):
         >>> result = thread.get()
 
         :param async bool
-        :param BitcoinSearchRequest search_request: searchRequest (required)
+        :param blocwatch_v1.bitcoin.BitcoinSearchRequest search_request: searchRequest (required)
         :param list[str] include: Specify which information to include with transactions.
         :param int page_limit:
         :param str page_token:

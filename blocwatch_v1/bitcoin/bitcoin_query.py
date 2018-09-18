@@ -16,8 +16,8 @@ import re  # noqa: F401
 
 import six
 
-from blocwatch_v1.bitcoin.bitcoin_compare_query import BitcoinCompareQuery  # noqa: F401,E501
-from blocwatch_v1.bitcoin.group_query import GroupQuery  # noqa: F401,E501
+import blocwatch_v1.bitcoin.bitcoin_compare_query  # noqa: F401,E501
+import blocwatch_v1.bitcoin.group_query  # noqa: F401,E501
 
 
 class BitcoinQuery(object):
@@ -122,6 +122,9 @@ class BitcoinQuery(object):
                 ))
             else:
                 result[attr] = value
+        if issubclass(BitcoinQuery, dict):
+            for key, value in self.items():
+                result[key] = value
 
         return result
 

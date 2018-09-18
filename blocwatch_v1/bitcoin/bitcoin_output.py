@@ -16,7 +16,7 @@ import re  # noqa: F401
 
 import six
 
-from blocwatch_v1.bitcoin.output_details import OutputDetails  # noqa: F401,E501
+import blocwatch_v1.bitcoin.output_details  # noqa: F401,E501
 
 
 class BitcoinOutput(object):
@@ -285,6 +285,9 @@ class BitcoinOutput(object):
                 ))
             else:
                 result[attr] = value
+        if issubclass(BitcoinOutput, dict):
+            for key, value in self.items():
+                result[key] = value
 
         return result
 

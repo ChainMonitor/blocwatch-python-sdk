@@ -16,8 +16,8 @@ import re  # noqa: F401
 
 import six
 
-from blocwatch_v1.bitcoin.bitcoin_query import BitcoinQuery  # noqa: F401,E501
-from blocwatch_v1.bitcoin.time_window import TimeWindow  # noqa: F401,E501
+import blocwatch_v1.bitcoin.bitcoin_query  # noqa: F401,E501
+import blocwatch_v1.bitcoin.time_window  # noqa: F401,E501
 
 
 class BitcoinSearchRequest(object):
@@ -122,6 +122,9 @@ class BitcoinSearchRequest(object):
                 ))
             else:
                 result[attr] = value
+        if issubclass(BitcoinSearchRequest, dict):
+            for key, value in self.items():
+                result[key] = value
 
         return result
 

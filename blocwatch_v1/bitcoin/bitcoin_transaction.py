@@ -16,8 +16,8 @@ import re  # noqa: F401
 
 import six
 
-from blocwatch_v1.bitcoin.details import Details  # noqa: F401,E501
-from blocwatch_v1.bitcoin.summary import Summary  # noqa: F401,E501
+import blocwatch_v1.bitcoin.details  # noqa: F401,E501
+import blocwatch_v1.bitcoin.summary  # noqa: F401,E501
 
 
 class BitcoinTransaction(object):
@@ -274,6 +274,9 @@ class BitcoinTransaction(object):
                 ))
             else:
                 result[attr] = value
+        if issubclass(BitcoinTransaction, dict):
+            for key, value in self.items():
+                result[key] = value
 
         return result
 
